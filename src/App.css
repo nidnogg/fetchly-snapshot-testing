@@ -14,7 +14,7 @@
 }
 
 .App-body {
-  background-color: #282c34;
+  background-color: #080010;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,12 +25,12 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #374151;
 }
 
 .App-button {
-  background-color: #454c5a;
-  border: 2.7px solid #626c80;
+  background-color: #2e005c;
+  border: 2.7px solid #2e005c;
   padding: 1em 1em;
   color: white;
 }
