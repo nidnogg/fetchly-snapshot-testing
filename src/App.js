@@ -12,7 +12,7 @@ const App = () => {
           </p>
           <a
             className="App-link"
-            href="https://reactjs.org"
+            href="https://github.com/nidnogg/fetchly-integration-testing"
             target="_blank"
             rel="noopener noreferrer"
           >
