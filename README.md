@@ -43,14 +43,14 @@ const button = screen.getByRole('button')
 const headerText = screen.getByRole('heading', ('Change the header text by clicking on the button'))
 ```
 
-Check that the button works okay: we can see if it contains the text set in the .HTML file, if it's enabled to be clicked by the user and so forth:
+Check that the button works okay - we can see if it contains the text set in the .HTML file, if it's enabled to be clicked by the user and so forth:
 
 ```javascript
 expect(button).not.toBeDisabled()
 expect(button).toHaveTextContent('Click me')
 ```
 
-Perform the click event via fireEvent;
+Perform the click event via fireEvent:
 
 ```javascript
 fireEvent.click(button)
