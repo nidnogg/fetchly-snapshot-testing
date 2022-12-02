@@ -1,6 +1,6 @@
 # fetchly-integration-testing
 
-This repository contains the sample code for integration testing with React, used in the [Fetchly Labs](https://www.fetch.ly/) tutorial.
+This repository contains the sample code for snapshot testing with React, used in the [Fetchly Labs](https://www.fetch.ly/) tutorial.
 
 It's been bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
