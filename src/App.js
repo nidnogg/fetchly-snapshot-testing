@@ -1,27 +1,25 @@
-import './App.css';
-import Header from './Header'
+import './App.css'
+import Article from './Article'
 
 const App = () => {
-  return (
-    <div className="App">
-      <section className="App-body">
-        <Header />
-        <section>
-          <p>
-            This small app tests the header changes that happen whenever the user clicks the button.
-          </p>
-          <a
-            className="App-link"
-            href="https://github.com/nidnogg/fetchly-integration-testing"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Tutorial
-          </a>
-        </section>
-      </section>
-    </div>
-  );
+    const baseText = 'Lorem Ipsum Dolor Amet Version 2'
+    return (
+        <div className='App'>
+            <section className='App-body'>
+                <section>
+                    <Article content={baseText} />
+                    <a
+                        className='App-link'
+                        href='https://github.com/nidnogg/fetchly-snapshot-testing'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        Tutorial
+                    </a>
+                </section>
+            </section>
+        </div>
+    )
 }
 
-export default App;
+export default App

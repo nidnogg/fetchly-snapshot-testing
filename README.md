@@ -6,88 +6,96 @@ It's been bootstrapped with [Create React App](https://github.com/facebook/creat
 
 ## Tutorial
 
-The app consists of two components, `App.js` and `Header.js`, of which only the latter will be tested. The header is composed of a base header text, tied to that component's state, and that changes based on a button.
+First, make sure you run `npm install react-test-renderer` before developing as it doesn't come pre-installed with Create React App.
 
-We want to test that the header text changes to a specific desired value, in this case, from *"Change the header text by clicking on the button"* to *"Header text changed"*.
+The app consists of two components, `App.js` and `Article.js`, of which only the latter will be tested. The article is a simple paragraph tag, that renders a `content` text prop.
+This is how App.js and Article.js are structured:
+```javascript
+// App.js render method
+const App = () => {
+    const baseText = 'Lorem Ipsum Dolor Amet'
+    return (
+        <div className='App'>
+            <section className='App-body'>
+                <section>
+                    <Article content={baseText} />
+                    <a
+                        className='App-link'
+                        href='https://github.com/nidnogg/fetchly-snapshot-testing'
+                        target='_blank'
+                        rel='noopener noreferrer'
+                    >
+                        Tutorial
+                    </a>
+                </section>
+            </section>
+        </div>
+    )
+}
+// Article.js render method
+const Article = ({content}) => {
+    return (
+        <>
+            <p>{content}</p>
+        </>
+    )
+}
+```
 
-To write an integration test for it, a file called `Header.test.js` has to be created.
+We want to test that the Article component text is consistent when developing and that it doesn't change unexpectedly. i.e. baseText should consistently be *"Lorem Ipsum Dolor Amet"*.
+
+To write a snapshot test for it, a file called `Article.test.js` has to be created.
 
 Inside, the following steps can be followed:
 
 ```javascript
-import { render, screen, fireEvent } from '@testing-library/react';
-import Header from './Header';
+import renderer from 'react-test-renderer'
+import Article from './Article'
 ```
 
-Here, we import the `Header` component itself, alongside a handful of utilities from `react-testing-library`.
-* render renders the Header component;
-* screen is used to fetch elements that are to be tested and many other things;
-* fireEvent is necessary for testing the button click functionality.
-
-After the imports, the following clause can be used as a starting point, rendering the header component:
+Here, we import the `Article` component itself, alongside the renderer from `react-test-renderer`. After the imports, the following clause can be used as a starting point, rendering the Article component:
 
 ```javascript
-describe('Header', () => {
-    test('change the text to Header text changed after clicking the button', async () => {
-        render(<Header />)
-        // Test code here
-    })
+it ('successful render', () => {
+    const tree = renderer
+        .create(<Article content="Lorem Ipsum Dolor Amet" />)
+        .toJSON()
+    expect(tree).toMatchSnapshot()
 })
 ```
 
-This will render the `Header.js` component and set the stage for testing its functionalities. We need to cover a few steps therein, all performed in the *"Test code here*" part of the code, inside the second callback function:
+When this test is executed, a snapshot file under the folder `/src/__snapshots__` will be created. This will be used in future tests, compared with newer snapshots to make sure that the current snapshot matches the intended original one.
 
-First, get elements that will be tested. This can be done via `screen`:
-```javascript
-const button = screen.getByRole('button')
-const headerText = screen.getByRole('heading', ('Change the header text by clicking on the button'))
-```
+This ensures any unexpected changes to your application's UI will be picked up when testing. If the text content of the Article component doesn't match the previous snapshot (in this case, *"Lorem Ipsum Dolor Amet"*) it will fail the test.
 
-Check that the button works okay - we can see if it contains the text set in the .HTML file, if it's enabled to be clicked by the user and so forth:
+In the end, your full test `Article.test.js` should look like this:
 
 ```javascript
-expect(button).not.toBeDisabled()
-expect(button).toHaveTextContent('Click me')
-```
+import renderer from 'react-test-renderer'
+import Article from './Article'
 
-Perform the click event via fireEvent:
-
-```javascript
-fireEvent.click(button)
-```
-
-Finally, check for the resulting change from the button click in the header.
-
-```javascript
-expect(headerText).toHaveTextContent('Header text changed')
-```
-
-In the end, you should have something like this in `Header.test.js`:
-
-```javascript
-import { render, screen, fireEvent } from '@testing-library/react';
-import Header from './Header';
-
-describe('Header', () => {
-    test('change the text to Header text changed after clicking the button', async () => {
-        render(<Header />)
-
-        const button = screen.getByRole('button')
-        const headerText = screen.getByRole('heading', ('Change the header text by clicking on the button'))
-
-        expect(button).not.toBeDisabled()
-        expect(button).toHaveTextContent('Click me')
-
-        fireEvent.click(button)
-
-        expect(headerText).toHaveTextContent('Header text changed')
-    })
+it ('successful render', () => {
+    const tree = renderer
+        .create(<Article content="Lorem Ipsum Dolor Amet" />)
+        .toJSON()
+    expect(tree).toMatchSnapshot()
 })
 ```
 
 This test can then be run with: 
 
 ### `npm test`
+
+A successful test will be then indicated by the following prompt:
+
+![successful_text](./public/img/successful_test.png)
+
+If while developing the Article component needs to undergo intended changes to its baseText prop, however, the original snapshot will result in a failed test. For instance, changing the `baseText` prop from *"Lorem Ipsum Dolor Amet"* to *"Lorem Ipsum Dolor Amet Version 2"*, and updating the `Article.test.js` accordingly. This will result in this prompt:
+
+![failed_text](./public/img/failed_test.png)
+
+Type in `w`, and you'll be able to see the options at the bottom. If after carefully evaluating the compared output with the previous snapshot you think it's all correctly rendered, press `u` to update the previous snapshot with the current one. This will ensure your future tests will be successfully run.
+
 ## Available Scripts (documentation from create-react-app)
 
 In the project directory, you can run:
